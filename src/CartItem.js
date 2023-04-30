@@ -33,6 +33,22 @@ class CartItem extends React.Component{
             return {
                 qty: prevState.qty + 1   //prevState -> defines the previous values of state object
             }
+        }, () => {
+            console.log(this.state);
+        });
+    }
+
+    // function to decrease the quantity of item when clicked on decrease button
+    decreaseQuantity = () => {
+        //if qty is equal to 0
+        if(this.state.qty === 0){
+            return;
+        }
+
+        this.setState((prevState) => {
+            return {
+                qty: prevState.qty - 1
+            }
         });
     }
 
@@ -52,7 +68,7 @@ class CartItem extends React.Component{
                     <div style={{color: '#777'}}>Qty: {qty} </div>
                     <div className='cart-item-actions'>
                         <img className='action-icons' alt='increase' src={add} onClick={this.increaseQuantity} />
-                        <img className='action-icons' alt='decrease' src={minus} />
+                        <img className='action-icons' alt='decrease' src={minus} onClick={this.decreaseQuantity} />
                         <img className='action-icons' alt='delete' src={deleteIcon} />
                     </div>
                 </div>
