@@ -19,6 +19,23 @@ class CartItem extends React.Component{
         }
     }
 
+    // function to increase the quantity of item when clicked on increase button
+    increaseQuantity = () => {
+        // console.log(this.state);
+
+        // incrementing the qty by using setState() method inherited from Component
+        // this.setState({
+        //     qty: this.state.qty + 1
+        // });
+
+        //setState case:2 - if previous state required use this
+        this.setState((prevState) => {  
+            return {
+                qty: prevState.qty + 1   //prevState -> defines the previous values of state object
+            }
+        });
+    }
+
     //to render JSX in class we use render() function
     render(){
         // using destructuring to get the properties from state
@@ -34,9 +51,9 @@ class CartItem extends React.Component{
                     <div style={{color: '#777'}}>Rs {price} </div>
                     <div style={{color: '#777'}}>Qty: {qty} </div>
                     <div className='cart-item-actions'>
-                        <img class='action-icons' alt='increase' src={add} />
-                        <img class='action-icons' alt='decrease' src={minus} />
-                        <img class='action-icons' alt='delete' src={deleteIcon} />
+                        <img className='action-icons' alt='increase' src={add} onClick={this.increaseQuantity} />
+                        <img className='action-icons' alt='decrease' src={minus} />
+                        <img className='action-icons' alt='delete' src={deleteIcon} />
                     </div>
                 </div>
             </div>
@@ -47,8 +64,8 @@ class CartItem extends React.Component{
 // adding styles to JSX using javascript object
 const styles = {
     image: {
-        height: 110,
-        width: 110,
+        height: 120,
+        width: 120,
         borderRadius: 4,
         backgroundColor: '#ccc'
     }
