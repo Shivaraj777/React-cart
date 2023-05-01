@@ -1,11 +1,10 @@
-import CartItem from './CartItem';
+import Cart from './Cart';
 
 //the main Cart app component
 function App() {
   return (
     <div className="App">
-      <h1>Cart</h1>
-      <CartItem/>    {/* Adding the CartItem component to the app */}
+      <Cart />       {/* Adding the Cart component to the DOM */}
     </div>
   );
 }
