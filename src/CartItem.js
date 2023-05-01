@@ -7,17 +7,6 @@ import deleteIcon from './delete.png';
 
 // CartItem class is a component which extends the propert Component from React library
 class CartItem extends React.Component{
-    //create a state
-    constructor(){
-        //if we are inheriting properties from parent class, then while calling constructor, we also need to call the constructor of parent class by using super keyword
-        super();
-        this.state ={
-            title: 'Phone',
-            price: 9999,
-            qty: 1,
-            img: ''
-        }
-    }
 
     // function to increase the quantity of item when clicked on increase button
     increaseQuantity = () => {
@@ -55,7 +44,7 @@ class CartItem extends React.Component{
     //to render JSX in class we use render() function
     render(){
         // using destructuring to get the properties from state
-        const {title, price, qty} = this.state;
+        const {title, price, qty} = this.props.product;
 
         return (
             <div className='cart-item'>
