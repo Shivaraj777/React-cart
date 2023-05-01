@@ -14,21 +14,21 @@ class App extends React.Component {
                     title: 'Mobile Phone',
                     price: 9999,
                     qty: 1,
-                    img: '',
+                    img: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=367&q=80',
                     id: 1
                 },
                 {
                     title: 'Watch',
                     price: 1999,
                     qty: 1,
-                    img: '',
+                    img: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80',
                     id: 2
                 },
                 {
                     title: 'Speaker',
                     price: 15000,
                     qty: 1,
-                    img: '',
+                    img: 'https://images.unsplash.com/photo-1558537348-c0f8e733989d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
                     id: 3
                 }
             ]
@@ -90,6 +90,18 @@ class App extends React.Component {
         return count;
     }
 
+    //function to get the total price of items in cart
+    getCartPrice = () => {
+        const {products} = this.state;
+        let totalPrice = 0;
+
+        products.forEach((product) => {
+            totalPrice += product.qty * product.price;
+        });
+
+        return totalPrice;
+    }
+
     render(){
         const {products} = this.state;
 
@@ -102,6 +114,9 @@ class App extends React.Component {
                     onDecreaseQuantity={this.handleDecreaseQuantity}
                     onDeleteItem={this.handleDeleteItem}
                 />                                          {/* Adding the Cart component to the DOM */}
+                <div style={{fontSize:20, padding:10}}>
+                    TOTAL PRICE: {this.getCartPrice()}
+                </div>
             </div>
         );
     }

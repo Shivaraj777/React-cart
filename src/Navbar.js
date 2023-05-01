@@ -5,7 +5,7 @@ import ShoppingCart from './images/cart.png'
 const Navbar = (props) => {
     return (
         <div style={styles.nav}>
-            <div sstyle={styles.cartIconContainer}>
+            <div style={styles.cartIconContainer}>
                 <img style={styles.cartIcon} alt='basket' src={ShoppingCart} />
                 <span style={styles.cartCount}> {props.count} </span>
             </div>
@@ -35,7 +35,7 @@ const styles = {
       padding: '4px 8px',
       position: 'absolute',
       right: 0,
-      top: 1
+      top: -12
     }
   };
 
