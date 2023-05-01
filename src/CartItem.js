@@ -1,9 +1,9 @@
 // This file contains the the code for Cart Item component
 
 import React from 'react';
-import add from './add.png';
-import minus from './minus.png';
-import deleteIcon from './delete.png';
+import add from './images/add.png';
+import minus from './images/minus.png';
+import deleteIcon from './images/delete.png';
 
 // CartItem class is a component which extends the propert Component from React library
 class CartItem extends React.Component{
