@@ -9,42 +9,29 @@ import deleteIcon from './delete.png';
 class CartItem extends React.Component{
 
     // function to increase the quantity of item when clicked on increase button
-    increaseQuantity = () => {
-        // console.log(this.state);
+    // increaseQuantity = () => {
+    //     // console.log(this.state);
 
-        // incrementing the qty by using setState() method inherited from Component
-        // this.setState({
-        //     qty: this.state.qty + 1
-        // });
+    //     // incrementing the qty by using setState() method inherited from Component
+    //     // this.setState({
+    //     //     qty: this.state.qty + 1
+    //     // });
 
-        //setState case:2 - if previous state required use this
-        this.setState((prevState) => {  
-            return {
-                qty: prevState.qty + 1   //prevState -> defines the previous values of state object
-            }
-        }, () => {
-            console.log(this.state);
-        });
-    }
-
-    // function to decrease the quantity of item when clicked on decrease button
-    decreaseQuantity = () => {
-        //if qty is equal to 0
-        if(this.state.qty === 0){
-            return;
-        }
-
-        this.setState((prevState) => {
-            return {
-                qty: prevState.qty - 1
-            }
-        });
-    }
+    //     //setState case:2 - if previous state required use this
+    //     this.setState((prevState) => {  
+    //         return {
+    //             qty: prevState.qty + 1   //prevState -> defines the previous values of state object
+    //         }
+    //     }, () => {
+    //         console.log(this.state);
+    //     });
+    // }
 
     //to render JSX in class we use render() function
     render(){
         // using destructuring to get the properties from state
         const {title, price, qty} = this.props.product;
+        const {product, onIncreaseQuantity, onDecreaseQuantity} = this.props;
 
         return (
             <div className='cart-item'>
@@ -56,8 +43,8 @@ class CartItem extends React.Component{
                     <div style={{color: '#777'}}>Rs {price} </div>
                     <div style={{color: '#777'}}>Qty: {qty} </div>
                     <div className='cart-item-actions'>
-                        <img className='action-icons' alt='increase' src={add} onClick={this.increaseQuantity} />
-                        <img className='action-icons' alt='decrease' src={minus} onClick={this.decreaseQuantity} />
+                        <img className='action-icons' alt='increase' src={add} onClick={() => {onIncreaseQuantity(product)}} />
+                        <img className='action-icons' alt='decrease' src={minus} onClick={() => {onDecreaseQuantity(product)}} />
                         <img className='action-icons' alt='delete' src={deleteIcon} />
                     </div>
                 </div>
