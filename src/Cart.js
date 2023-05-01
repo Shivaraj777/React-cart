@@ -64,6 +64,18 @@ class Cart extends React.Component{
         });
     }
 
+    //function to delete the cart item when delete button is clicked
+    handleDeleteItem = (productId) => {
+        //filter out the products which are not deleted
+        const {products} = this.state;
+        const filteredProducts = products.filter((product) => product.id !== productId);
+
+        //update the products in state object
+        this.setState({
+            products: filteredProducts
+        });
+    }
+
     render(){
         //assigning the products array of state by using destructuring
         const {products} = this.state;
@@ -78,6 +90,7 @@ class Cart extends React.Component{
                             key={product.id}
                             onIncreaseQuantity={this.handleIncreaseQuantity}  // passing handleIncreaseQuantity as props to CartItem
                             onDecreaseQuantity={this.handleDecreaseQuantity}
+                            onDeleteItem={this.handleDeleteItem}
                         />
                     );
                 })}

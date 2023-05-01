@@ -31,7 +31,7 @@ class CartItem extends React.Component{
     render(){
         // using destructuring to get the properties from state
         const {title, price, qty} = this.props.product;
-        const {product, onIncreaseQuantity, onDecreaseQuantity} = this.props;
+        const {product, onIncreaseQuantity, onDecreaseQuantity, onDeleteItem} = this.props;
 
         return (
             <div className='cart-item'>
@@ -45,7 +45,7 @@ class CartItem extends React.Component{
                     <div className='cart-item-actions'>
                         <img className='action-icons' alt='increase' src={add} onClick={() => {onIncreaseQuantity(product)}} />
                         <img className='action-icons' alt='decrease' src={minus} onClick={() => {onDecreaseQuantity(product)}} />
-                        <img className='action-icons' alt='delete' src={deleteIcon} />
+                        <img className='action-icons' alt='delete' src={deleteIcon} onClick={() => {onDeleteItem(product.id)}} />
                     </div>
                 </div>
             </div>
