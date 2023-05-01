@@ -1,7 +1,7 @@
 import React from 'react';
-import ShoppingCart from './images/shopping-cart.png'
+import ShoppingCart from './images/cart.png'
 
-function Navbar(){
+const Navbar = (props) => {
     return (
         <div style={styles.nav}>
             <div sstyle={styles.cartIconContainer}>
@@ -34,7 +34,7 @@ const styles = {
       padding: '4px 8px',
       position: 'absolute',
       right: 0,
-      top: -9
+      top: 1
     }
   };
 
