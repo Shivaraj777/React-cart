@@ -1,12 +1,13 @@
 import React from 'react';
 import ShoppingCart from './images/cart.png'
 
+//props is passed to a functional component by default
 const Navbar = (props) => {
     return (
         <div style={styles.nav}>
             <div sstyle={styles.cartIconContainer}>
                 <img style={styles.cartIcon} alt='basket' src={ShoppingCart} />
-                <span style={styles.cartCount}>3</span>
+                <span style={styles.cartCount}> {props.count} </span>
             </div>
         </div>
     );
