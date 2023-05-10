@@ -2,7 +2,7 @@ import React from 'react';
 import Cart from './Cart';
 import Navbar from './Navbar';
 import {db} from './firebaseInit.js';
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, onSnapshot, getDocs, addDoc } from "firebase/firestore";
 
 //the main Cart app component
 class App extends React.Component {
@@ -18,25 +18,27 @@ class App extends React.Component {
 
     async componentDidMount(){
         //get the db data from firebase database
-        const querySnapshot = await getDocs(collection(db, 'products'));
+        const querySnapshot = await getDocs(collection(db, 'products'));  //dh
+        const q = query(collection(db, "products"));  //rf
 
-        // querySnapshot.forEach((doc) => {
-        //     console.log(doc.id, ': ', doc.data());
-        // });
+        //update the data of cart in real time by using onSnapshot() method
+        //onSnapshot() method is a listener, which updates the data in client when document is updated in DB
+        const unsubscribe = await onSnapshot(q, (querySnapshot) => {
+            //add the documents from database to products
+            const products = querySnapshot.docs.map((doc) => {
+                let data = doc.data();
+                data['id'] = doc.id;
+                return data;
+            });
 
-        //add the documents from database to products
-        const products = querySnapshot.docs.map((doc) => {
-            let data = doc.data();
-            data['id'] = doc.id;
-            return data;
+            // console.log(products);
+
+            //change the state(data) for products
+            this.setState({
+                products,
+                loading: false
+            });
         });
-
-        console.log(products);
-
-        //change the state(data) for products
-        this.setState({
-            products
-        })
     }
 
     //function to increase the quantity when plus button is clicked
@@ -78,7 +80,6 @@ class App extends React.Component {
         //update the products in state object
         this.setState({
             products: filteredProducts,
-            loading: false
         });
     }
 
@@ -109,12 +110,29 @@ class App extends React.Component {
         return totalPrice;
     }
 
+    //function to add a new product to database
+    addProduct = async () => {
+        //create a new document
+        const newDoc = {
+            img: 'https://brain-images-ssl.cdn.dixons.com/1/5/10182851/u_10182851.jpg',
+            price: 2678,
+            qty: 1,
+            title: 'Speaker'
+        }
+
+        //insert the new document to database
+        const docRef = await addDoc(collection(db, 'products'), newDoc);
+
+        console.log('New document is inserted: ', docRef);
+    }
+
     render(){
         const {products, loading} = this.state;
 
         return (
             <div className="App">
                 <Navbar count={this.getCartCount()} />  {/* passing the count of items to navbar component as props */}
+                <button onClick={this.addProduct} style={{padding: 20, fontSize: 20 }}>Add a product</button>
                 <Cart
                     products={products} 
                     onIncreaseQuantity={this.handleIncreaseQuantity}  // passing handleIncreaseQuantity as props to CartItem
