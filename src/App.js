@@ -1,6 +1,8 @@
 import React from 'react';
 import Cart from './Cart';
 import Navbar from './Navbar';
+import {db} from './firebaseInit.js';
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 //the main Cart app component
 class App extends React.Component {
@@ -9,30 +11,32 @@ class App extends React.Component {
         //if we are inheriting properties from parent class, then while calling constructor, we also need to call the constructor of parent class by using super keyword
         super();
         this.state = {
-            products: [
-                {
-                    title: 'Mobile Phone',
-                    price: 9999,
-                    qty: 1,
-                    img: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=367&q=80',
-                    id: 1
-                },
-                {
-                    title: 'Watch',
-                    price: 1999,
-                    qty: 1,
-                    img: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80',
-                    id: 2
-                },
-                {
-                    title: 'Speaker',
-                    price: 15000,
-                    qty: 1,
-                    img: 'https://images.unsplash.com/photo-1558537348-c0f8e733989d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-                    id: 3
-                }
-            ]
+            products: [],
+            loading: true
         }
+    }
+
+    async componentDidMount(){
+        //get the db data from firebase database
+        const querySnapshot = await getDocs(collection(db, 'products'));
+
+        // querySnapshot.forEach((doc) => {
+        //     console.log(doc.id, ': ', doc.data());
+        // });
+
+        //add the documents from database to products
+        const products = querySnapshot.docs.map((doc) => {
+            let data = doc.data();
+            data['id'] = doc.id;
+            return data;
+        });
+
+        console.log(products);
+
+        //change the state(data) for products
+        this.setState({
+            products
+        })
     }
 
     //function to increase the quantity when plus button is clicked
@@ -73,7 +77,8 @@ class App extends React.Component {
 
         //update the products in state object
         this.setState({
-            products: filteredProducts
+            products: filteredProducts,
+            loading: false
         });
     }
 
@@ -96,14 +101,16 @@ class App extends React.Component {
         let totalPrice = 0;
 
         products.forEach((product) => {
-            totalPrice += product.qty * product.price;
+            if(product.qty > 0){
+                totalPrice += product.qty * product.price;
+            }
         });
 
         return totalPrice;
     }
 
     render(){
-        const {products} = this.state;
+        const {products, loading} = this.state;
 
         return (
             <div className="App">
@@ -114,6 +121,7 @@ class App extends React.Component {
                     onDecreaseQuantity={this.handleDecreaseQuantity}
                     onDeleteItem={this.handleDeleteItem}
                 />                                          {/* Adding the Cart component to the DOM */}
+                {loading && 'Fetching the data...'}
                 <div style={{fontSize:20, padding:10}}>
                     TOTAL PRICE: {this.getCartPrice()}
                 </div>
