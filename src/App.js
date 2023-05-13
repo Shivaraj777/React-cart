@@ -2,7 +2,7 @@ import React from 'react';
 import Cart from './Cart';
 import Navbar from './Navbar';
 import {db} from './firebaseInit.js';
-import { collection, doc, query, onSnapshot, getDocs, addDoc, updateDoc, increment } from "firebase/firestore";
+import { collection, doc, query, onSnapshot, getDocs, addDoc, updateDoc, increment, deleteDoc } from "firebase/firestore";
 
 //the main Cart app component
 class App extends React.Component {
@@ -92,15 +92,21 @@ class App extends React.Component {
     }
 
     //function to delete the cart item when delete button is clicked
-    handleDeleteItem = (productId) => {
-        //filter out the products which are not deleted
-        const {products} = this.state;
-        const filteredProducts = products.filter((product) => product.id !== productId);
+    handleDeleteItem = async (productId) => {
+         //get the document to be deleted from DB
+         const docRef = doc(db, 'products', productId);
 
+         //delete the document in database
+         await deleteDoc(docRef);
+         console.log('Product deleted sucessfully');
+
+        //filter out the products which are not deleted
+        // const {products} = this.state;
+        // const filteredProducts = products.filter((product) => product.id !== productId);
         //update the products in state object
-        this.setState({
-            products: filteredProducts,
-        });
+        // this.setState({
+        //     products: filteredProducts,
+        // });
     }
 
     //function to get the count of items in the cart
