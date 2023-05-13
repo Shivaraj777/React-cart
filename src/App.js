@@ -2,7 +2,7 @@ import React from 'react';
 import Cart from './Cart';
 import Navbar from './Navbar';
 import {db} from './firebaseInit.js';
-import { collection, query, onSnapshot, getDocs, addDoc } from "firebase/firestore";
+import { collection, doc, query, onSnapshot, getDocs, addDoc, updateDoc, increment } from "firebase/firestore";
 
 //the main Cart app component
 class App extends React.Component {
@@ -42,20 +42,30 @@ class App extends React.Component {
     }
 
     //function to increase the quantity when plus button is clicked
-    handleIncreaseQuantity = (product) => {
+    handleIncreaseQuantity = async (product) => {
         console.log('Increase the qty for', product);
 
         const {products} = this.state;
         const productIndex = products.indexOf(product);
-        products[productIndex].qty += 1;
 
-        this.setState({
-            products: products
+        //get the document to be updated from DB
+        const docRef = doc(db, 'products', products[productIndex].id);
+
+        //update the document by refering to the particular attribute
+        await updateDoc(docRef, {
+            qty: increment(1)
         });
+
+        console.log('qty updated sucessfully');
+
+        // products[productIndex].qty += 1;
+        // this.setState({
+        //     products: products
+        // });
     }
 
     //function to decrease the quantity when minus button is clicked
-    handleDecreaseQuantity = (product) => {
+    handleDecreaseQuantity = async (product) => {
         if(product.qty === 0){
             return;
         }
@@ -64,11 +74,21 @@ class App extends React.Component {
 
         const {products} = this.state;
         const productIndex = products.indexOf(product);
-        products[productIndex].qty -= 1;
 
-        this.setState({
-            products: products
+        //get the document to be updated from DB
+        const docRef = doc(db, 'products', products[productIndex].id);
+
+        //update the document by refering to the particular attribute
+        await updateDoc(docRef, {
+            qty: products[productIndex].qty - 1
         });
+
+        console.log('qty updated sucessfully');
+
+        // products[productIndex].qty -= 1;
+        // this.setState({
+        //     products: products
+        // });
     }
 
     //function to delete the cart item when delete button is clicked
